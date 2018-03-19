@@ -360,23 +360,55 @@ typedef struct{
 
 **插入操作：**
 
->> 线性表的插入运算是指在表的第i个位置上，插入一个新结点b  
+线性表的插入运算是指在表的第i个位置上，插入一个新结点b
+
 >> **算法思想**  
 >> 检查i是否超出允许范围（1<= i <=n+1）；  
 >> 将第i个元素和它后面所有的元素均后移一个位置；  
 >> 将新元素写道空出的第i个位置上；使线性表的长度增1。
+```
+//往数组尾部增加一个数据
+function add_data_to_arry_last(data_arrays,data){
+	data_arrays.push(data);
+}
+//往数组开头增加一个数据
+function add_data_to_array_first(data_arrays,data){
+	data_arrays.unshift(data);
+}
+//往数组的任意位置插入一个数据
+function add_data_to_array(data_arrays,i,data){
+	var len=data_arrays.length;
+	if( i<1 || i>len){return false;}
+	else{
+	  data_arrays.splice(i-1,0,data);
+	  return data_arrays;
+	}
+}
+add_data_to_array([1,2,3,4],1,'232');
+```
+**在顺序表上做插入运算，平均要移动表上一半元素。**当表长n较大时，算法的效率相当低。算法的平均时间复杂度为O(n).
 
-
+**删除操作**
 
 ```
+function delete_data_from_array(data_arrays,i){
+	var len=data_arrays.length;
+	if( i<1 || i>len){return false;}
+	else{
+	  data_arrays.splice(i-1,1);
+	  return data_arrays;
+	}
+}
+delete_data_from_array([1,2,3,4],1);
+```
+**在顺序表上做删除运算，平均约要移动表上一半元素。**当表长n较大时，算法的效率相当低。算法的平均时间复杂度为O(n).
 
+#### 练习
+* 对于顺序存储的线性表，访问结点和删除结点的时间复杂度分别为(**O(1)  O(n)**)。
 
+### 线性表对的链式表示和实现
 
-
-
-
-
-
+****
 
 
 
