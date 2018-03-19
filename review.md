@@ -19,7 +19,7 @@
 
 + 物理结构（存储结构）  
     >   数据结构在计算机中的表示（映像）称为数据的物理结构  
-* 顺序映像  
+* 顺序映像   
     >   顺序映像的特点是借助元素在储蓄器中的相对位置来表示数据元素之间的逻辑关系。  
 * 非顺序映像  
     >   非顺序映像的特点是借助指示元素存储地址的指针表示数据元素之间的逻辑关系。  
@@ -220,4 +220,166 @@ Void bubble-sort(int a[]，int n)
   >       存在唯一的一个被称作 “第一个”的数据元素  
   >       存在唯一的一个被称作“最后一个”的数据元素  
   >       除第一个之外的数据元素均只有一个前驱  
-  >       除最后一个之外的数据元素均只有一个后继  
+  >       除最后一个之外的数据元素均只有一个后继  
+### 线性表的ADT定义  
+
+{**销毁结构**}
+
+   DestroyList(&l）  
+    初始条件：线性表L已存在。  
+    操作结果：销毁线性表L。 
+	```
+	bool SqList::DestoryList()
+	{
+	 delete []p;
+	 p=NULL;
+	    return true;
+	}
+	```
+{**引用型操作**}  
+
+操作的结果不改变线性表中数据元素，也不改变数据元素之间的关系。  
+
+**ListEmpty(L)**
+   初始条件：线性表L已存在。
+   
+   操作结果：若L为空表，则返回TRUE，否则返回FALSE。
+   
+ {**加工型操作**}
+ 
+ 操作的结果或修改表中数据元素，或修改元素之间的关系。
+ 
+ **ClearList(&L)**
+ 
+   初始条件：线性表L已存在。  
+   
+   操作结果：将L重置为空表。
+	```
+	bool SqList::ClearList()
+	{
+	 length=0;
+	 return true;
+	}
+	```
+**思考：clearList(L) 与 DestroyList(L) 的区别**
+	
+  > 清空线性表，只要里面没有元素就可以。线性表还存在，可以继续操作。L.elem = 0 只是让线性表的元素个数为0。  
+  
+  > 销毁线性表的操作一般是释放整个线性表的内存空间。销毁后就不能再使用了。
+
+#### 线性表ADT基本操作的简单应用  
+
+##### 例 2-1 已知集合A和B，求这两个集合的并集，使 A= A U B , 且  B 不再单独存在。  
+
+要在计算机中求解，首先要确定 “**如何表示集合**”  --- 用线性表表示  
+
+以线性表LA 和 LB 分别表示集合 A 和 B ，两个线性表的数据元素分别为集合A 和 B 中的成员。
+
+由此，上述集合求并的问题便可演绎为：
+
+扩大线性表LA，将存在于线性表LB中，而不存在于线性表LA中的数据元素插入到线性表LA中去。
+```
+void union (List &La , List Lb){
+    La_len = ListLength(La); Lb_len = ListLength(Lb);
+    for(i=1;i<=Lb_len;i++)
+    {
+    	GetElem(Lb,i,&e);//取Lb中第i个数据元素赋给e
+	if(!LocateElem (La,e,equal()))//执行时间与表长成正比
+	ListInsert(&La,++La_len,e);
+	//La中不存在和e相同的数据元素，则插入之
+    }
+    DestroyList(Lb);//销毁线性表Lb
+}//union
+```
+
+时间复杂度 : O(ListLength(La) * ListLenght(Lb))
+
+##### 例 2.2 合并两个有序表  
+   LA =(3,5,8,11)  LB=(2,6,8,9,11,15,20)  
+
+**思路**  
+1. 分别从La和Lb中取得当前元素ai和bj;
+2. 若ai<=bj , 则将ai插入到Lc中，否则将bj插入到lc中。
+
+```
+void MergeList(List La, List Lb, List &Lc) {
+   InitList(&Lc);
+   i = j = 1; k = 0;
+   La_len = ListLength(La);     Lb_len = ListLength(Lb);
+   while ((i  La_len) && ( j  Lb_len)) {   // La 和 Lb 均未取完 
+        GetElem(La, i, ai ); GetElem(Lb, j, bj );
+        if (ai  bj ) {ListInsert(Lc, ++k, ai ); ++i; }
+        else { ListInsert(Lc, ++k, bj  ); ++j; }
+   }
+   while (iLa_len) {GetElem(La, i++, ai);  ListInsert(Lc, ++k, ai);} 
+   while (jLb_len) {GetElem(Lb, j++, bj);  ListInsert(Lc, ++k, bj);} 
+}  
+```
+**时间复杂度： O（ListLength(La) + ListLength(Lb)）** 
+
+在实际的程序设计中**要使用**线性表的基本操作，必须**先实现**线性表类型。  
+	**确定存储结构，实现基本操作**  
+	
+### 线性表的顺序表示和实现
+**线性表的顺序存储结构**  
+* 在计算机中用一组**地址连续**的存储单元**依次存储**线性表的个个数据元素，称作线性表的**顺序存储结构**或**顺序映像**。用这种方法存储的线性表称作**顺序表**。
+
+由此，所有数据元素的存储位置均可通过基地址得到：
+
+**LOC(ai+1) = LOC(ai)+l     LOC(ai)=LOC(a1) + (i-1)*l **
+
+特点：**以物理位置相邻表示逻辑关系；任一元素均可随机存取。**
+
+**结论：**已知位置、获取该位置上的元素非常方便，与该线性表的长度无关。
+
+**静态顺序存储**
+```
+#define LIST_INIT_SIZE 100 //线性表存储空间的初始分配量
+typedef struct{
+	ElemType elem[LIST_INIT_SIZE];
+	int length;//当前长度
+}SqList;
+```
+**动态顺序存储**
+
+考虑到线性表因插入元素而使存储空间不足的问题，应允许数组容量进行动态扩充。
+
+```
+#define LIST_INIT_SIZE 100 //线性表存储空间的初始分配量
+#define LISTINCREMENT 10   //线性表存储空间的分配增量
+typedef struct{
+	ElemType *elem;//数组指针，指示线性表的基地址
+	int length;//当前长度
+	int listsize;//当前分配的存储容量（以sizeof（elementtype）为单位）
+}SqList;
+```
+**注意**C语言中的数组下标从‘0’开始，因此若L是Sqlist类型的顺序表，则表中第i个元素是L.elem[i-1]。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
