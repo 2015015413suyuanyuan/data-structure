@@ -235,6 +235,7 @@ Void bubble-sort(int a[]，int n)
 	    return true;
 	}
 	```
+	
 {**引用型操作**}  
 
 操作的结果不改变线性表中数据元素，也不改变数据元素之间的关系。  
@@ -253,6 +254,7 @@ Void bubble-sort(int a[]，int n)
    初始条件：线性表L已存在。  
    
    操作结果：将L重置为空表。
+   
 	```
 	bool SqList::ClearList()
 	{
@@ -260,6 +262,7 @@ Void bubble-sort(int a[]，int n)
 	 return true;
 	}
 	```
+	
 **思考：clearList(L) 与 DestroyList(L) 的区别**
 	
   > 清空线性表，只要里面没有元素就可以。线性表还存在，可以继续操作。L.elem = 0 只是让线性表的元素个数为0。  
@@ -277,6 +280,7 @@ Void bubble-sort(int a[]，int n)
 由此，上述集合求并的问题便可演绎为：
 
 扩大线性表LA，将存在于线性表LB中，而不存在于线性表LA中的数据元素插入到线性表LA中去。
+
 ```
 void union (List &La , List Lb){
     La_len = ListLength(La); Lb_len = ListLength(Lb);
