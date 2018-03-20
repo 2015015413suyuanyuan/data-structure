@@ -433,11 +433,113 @@ delete_data_from_array([1,2,3,4],1);
 
 1. 查找运算
 * 按序号查找（GetElem(L,i,&e)在链表中的实现）  
->   在单链表中，即使知道被访问结点的序号i，也不能象顺序表中那样直接按序号i访问结点，而只能从头指针出发，顺着链域next 逐个结点往下搜索，直到搜索到第i个结点为止。因此，**单链表是非随机存取的存储结构**。
-  
+>   在单链表中，即使知道被访问结点的序号i，也不能象顺序表中那样直接按序号i访问结点，而只能从头指针出发，顺着链域next 逐个结点往下搜索，直到搜索到第i个结点为止。因此，**单链表是非随机存取的存储结构**。  
+>  算法的时间复杂度为：O(n)
 
+```
+function ListNode(data)
+{
+	this.data = data;
+	this.next =null;
+	return this;
+}
+function LinkedList()
+{
+	this.list_header = null;
+}
+LinkedList.create_list_from_array = function(array_data)
+{
+	var list = new LinkedList();
+	for(var i=0;i<array_data.length;i++){
+		var node = new ListNode(array_data[array_data.length-i-1]);
+		node.next = list.list_header;
+		list.list_header = node;
+	}
+	return list;
+}
 
+LinkedList.prototype.insert_node_to_list_index =function(index,data)
+{
+	if(index == 0) return this.insert_node_to_list_first(data);
+	var temp = this.get_nodes_from_index_in_list(index);
+	this.insert_between_nodes(temp.last,temp.current,data);
+	return this.list_header;
+};
+LinkedList.prototype.insert_node_to_list_first=function(data)
+{
+	var new_node = new ListNode(data);
+	new_node.next = this.list_header;
+	this.list_header = new_node;
+	return this.list_header;
+}
+LinkedList.prototype.get_nodes_from_index_in_list=function(index)
+{
+	var first_node =null;
+	var second_node = this.list_header;
+	for(var i=0; i!=index;i++)
+	{
+		first_node = second_node;
+		second_node=second_node.next;
+	}
+	return {
+		last:first_node;
+		current:second_node
+	};
+};
 
+LinkedList.prototype.insert_between_nodes = function(first_node,second_node,data)
+{
+	var new_node = new ListNode(data);
+	new_node.next =second_node;
+	if(first_node != null) first_node.next = new_node;
+	return new_node;
+};
+```
+
+* 按值查找  
+>  算法的时间复杂度为：O(n)  
+```
+function ListNode(data)
+{
+    this.data = data;
+    this.next = null;
+    return this;
+}
+function LinkedList()
+{
+    this.list_header = null;
+}
+LinkedList.create_list_from_array = function(array_data)
+{
+    //在这里写入代码
+    var list = new LinkedList();
+    for(var i=0;i<array_data.length;i++){
+        //var node = new ListNode(array_data[i]);//这样写的话，链表顺序是如何的，输出测试一下
+        var node = new ListNode(array_data[array_data.length-i-1]);
+        node.next = list.list_header;
+        list.list_header = node;
+    }
+    return list;
+};
+
+LinkedList.prototype.get_node_index_from_data = function(data)
+{
+    var index = 0;
+    //在这里写入代码
+    var current_node = this.list_header;
+    while(current_node.data!=data){
+        currentNode = currentNode.next;
+        index++;
+        if(currentNode == null){return index=-1;}
+    }
+    return index;
+};
+
+//测试代码如下
+var list = LinkedList.create_list_from_array([1,2,3,"x"]);
+console.log(list);
+list.get_node_index_from_data(3);
+```
 
 
 
