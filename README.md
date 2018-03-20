@@ -431,7 +431,7 @@ delete_data_from_array([1,2,3,4],1);
 
 #### 单链表的基本操作
 
-1. 查找运算
+#### 1. 查找运算
 * 按序号查找（GetElem(L,i,&e)在链表中的实现）  
 >   在单链表中，即使知道被访问结点的序号i，也不能象顺序表中那样直接按序号i访问结点，而只能从头指针出发，顺着链域next 逐个结点往下搜索，直到搜索到第i个结点为止。因此，**单链表是非随机存取的存储结构**。  
 >  算法的时间复杂度为：O(n)
@@ -540,6 +540,173 @@ var list = LinkedList.create_list_from_array([1,2,3,"x"]);
 console.log(list);
 list.get_node_index_from_data(3);
 ```
+
+#### 2、插入运算
+##### s->next = p->next;   p->next = s;
+#####算法的时间复杂度：O(n)
+```
+function ListNode(data)
+{
+	this.data = data;
+	this.next =null;
+	return this;
+}
+function LinkedList()
+{
+	this.list_header = null;
+}
+LinkedList.create_list_from_array = function(array_data)
+{
+	var list = new LinkedList();
+	for(var i=0;i<array_data.length;i++){
+		var node = new ListNode(array_data[array_data.length-i-1]);
+		node.next = list.list_header;
+		list.list_header = node;
+	}
+	return list;
+}
+
+LinkedList.prototype.insert_node_to_list_index =function(index,data)
+{
+	if(index == 0) return this.insert_node_to_list_first(data);
+	var temp = this.get_nodes_from_index_in_list(index);
+	this.insert_between_nodes(temp.last,temp.current,data);
+	return this.list_header;
+};
+LinkedList.prototype.insert_node_to_list_first=function(data)
+{
+	var new_node = new ListNode(data);
+	new_node.next = this.list_header;
+	this.list_header = new_node;
+	return this.list_header;
+}
+LinkedList.prototype.get_nodes_from_index_in_list=function(index)
+{
+	var first_node =null;
+	var second_node = this.list_header;
+	for(var i=0; i!=index;i++)
+	{
+		first_node = second_node;
+		second_node=second_node.next;
+	}
+	return {
+		last:first_node;
+		current:second_node
+	};
+};
+
+LinkedList.prototype.insert_between_nodes = function(first_node,second_node,data)
+{
+	var new_node = new ListNode(data);
+	new_node.next =second_node;
+	if(first_node != null) first_node.next = new_node;
+	return new_node;
+};
+```
+
+
+
+#### 3、删除运算
+##### p->next = p->next->net;
+#####算法的时间复杂度：O(n)
+```
+function ListNode(data)
+{
+    this.data = data;
+    this.next = null;
+    return this;
+}
+function LinkedList()
+{
+    this.list_header = null;
+}
+LinkedList.prototype.find_nodes_from_data_list = function(data)
+{
+    var last_node = null;
+    var current_node = this.list_header;
+    while(current_node.data != data)
+    {
+        last_node = current_node;
+        current_node = current_node.next;
+        if (current_node == null) return null;
+    }
+
+    return {
+        last:last_node,
+        current:current_node
+    };
+};
+LinkedList.prototype.find_nodes_from_index_list = function(index)
+{
+    var first_node = null;
+    var second_node = this.list_header;
+    for (var i = 0 ; i != index; i++)
+    {
+        first_node = second_node;
+        second_node = second_node.next;
+        if (second_node == null) return null;
+    }
+    return {
+        last:first_node,
+        current:second_node
+    };
+};
+LinkedList.prototype.remove_node_from_list = function(data)
+{
+    //在这里写入代码
+    var temp = this.find_nodes_from_data_list(data);
+    if (temp == null) return null;
+    if (temp.last != null)
+        temp.last.next = temp.current.next;
+    else
+        this.list_header = temp.current.next;
+
+    return temp.current;
+};
+LinkedList.prototype.remove_node_index_from_list = function(index)
+{
+    //在这里写入代码
+    var temp = this.find_nodes_from_index_list(index);
+    if (temp == null) return null;
+    if (temp.last != null)
+        temp.last.next = temp.current.next;
+    else
+        this.list_header = temp.current.next;
+    return temp.current;
+};
+
+
+//测试代码如下
+//创建链表的静态方法
+LinkedList.create_list_from_array = function(array_data)
+{
+    var list = new LinkedList();
+    for(var i=0;i<array_data.length;i++){
+        //var node = new ListNode(array_data[i]);//这样写的话，链表顺序是如何的，输出测试一下
+        var node = new ListNode(array_data[array_data.length-i-1]);
+        node.next = list.list_header;
+        list.list_header = node;
+    }
+    return list;
+};
+//测试链表 list
+var list = LinkedList.create_list_from_array([1,2,3,"x","y","z"]);
+console.log(list);
+```
+**在链表上实现插入和删除运算 无序移动结点 仅需修改指针**。
+
+#### 头节点的作用作用是对链表进行操作时，可以对空表、非空表的情况以及对首元结点进行统一处理，编程更方便。
+
+### 静态链表  
+>  链表具有最大的表长  
+
+### 循环链表  
+>  循环链表：是一种头尾相接的链表（即：表中最后一个结点的指针域指向头结点，整个链表形成一个环）。  
+>  **优点**：从表中任意结点出发均可找到表中其他结点。  
+>  由于循环链表中没有NULL指针，故涉及遍历操作时，其**终止条件**就不再像**非循环链表**那样**判断** p 或 p->next 是否为空，而是**判断它们是否等于头指针**。  
+
+
+
 
 
 
