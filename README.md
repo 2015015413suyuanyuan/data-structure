@@ -843,3 +843,62 @@ typedef struct DuLNode{
 
 ![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/TnR3nyjAtJiIsRowj9fHfWjCxe3q2YcM6uR7cpvsDd0!/b/dEUBAAAAAAAA&bo=KAOAAgAAAAARF4k!&rf=viewer_4)
 
+
+### 循环队列
+
+##### 顺序队列
+
+> 是限制再表头删除和表尾插入的顺序表。  
+>  利用一组**地址连续**的存储单元**依次存放**队列中的数据元素。  
+>  因为：对头和对尾的位置是变化的，所以：设头、尾指针。  
+
+**头尾指针**  
+  
+* 初始化时的初始值均应置为0。  
+* 入队，尾指针增1  
+* 出队，头指针增1  
+* **头尾指针**相等时队列为空  
+* 在非空队列里，头指针始终指向对头元素  
+* 尾指针适中指向对尾元素的下一个位置 
+
+
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/mE2kpnwE6D5UA36qVTA4u6rpON7ZonT4U8SNLLgqRTI!/b/dHMAAAAAAAAA&bo=KQPlAAAAAAARF.8!&rf=viewer_4)
+
+ 
+**这样会出现溢出的问题**  
+
+**解决 假溢出 的问题  所以提出了  循环队列**  
+
+----------
+
+#### 循环队列
+* 少用一个元素的空间，约定入队前测试尾指针在循环移一下加1后是否等于头指针，若相等则认为队满；  
+
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/664WkZT*76dOrB0Rfz*HKIuP4KQrFnCH26SSa1dirE0!/b/dAgBAAAAAAAA&bo=IgITAQAAAAARBwI!&rf=viewer_4)
+
+* 循环意义下的加1操作可以描述为：  
+
+    if(rear + 1 >= MAXQSIZE)  
+    rear=0;  
+    else  
+    rear++;  
+
+* 利用模运算可简化为： **rear = (rear +1)% MAXQSIZE**
+
+* 判断循环队列，队满的条件是：**(rear +1)% MAXQSIZE == front**
+ 
+*  判断循环队列，队空的条件是：**Q.front = Q.rear =0**
+  
+*  求循环队列的长度：**（Q.rear - Q.front + MAXQSIZE) % MAXQSIZE**
+* 插入操作：**Q.rear =(Q.raer +1) % MAXQSIZE**
+
+* 删除操作： **Q.front = (Q.front+1) % MAXQSIZE** 
+
+
+#### 队列的应用
+* 杨辉三角的计算  
+* CPU资源的竞争问题  
+* 主机与外部设备之间速度不匹配的问题
+
