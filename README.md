@@ -757,16 +757,89 @@ typedef struct DuLNode{
 >> 若线性表的长度变化不大，且其主要操作是查找，则采用**顺序表**；  
 >>若线性表的长度变化较大，且其主要操作是插入、删除操作，则采用**链表**。  
 
+## 第三章 栈和队列
+* 栈的定义  
+栈：线性表  
+>>  限定仅在表尾进行插入或删除操作。  
+>>  后进先出(LIFO结构)  
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/4zWEvvOJNTEKULeqV4eP6hrguj7WYt5a3FOqcOmFng4!/b/dEQBAAAAAAAA&bo=TgEFAQAAAAARB3s!&rf=viewer_4)
+
+* 顺序栈  
+**顺序栈**：利用一组地址连续的存储单元依次存放自栈底到栈顶的数据元素，同时附设指针top指示栈顶元素在顺序栈中的位置。  
+>> 栈空，再进行元素“出栈”操作，将产生“下溢”。  
+>> 栈满，再进行元素“进栈”操作，将产生“上溢”。  
+
+* ADT:  
+```
+    #define STACK_INIT_SIZE 100// 栈存储空间的初始分配量  
+    #define STACKINCREMENT 10   // 栈存储空间的分配增量   
+    typedefstruct{
+    	SelemType *base; //栈底指针，它始终指向栈底的位置。
+    	SelemType *top; //栈顶指针。
+    	int stacksize; //当前分配的栈可使用的最大存储容量。
+    }Sqstack;
+```
+    
+**注意**：base的值为NULL,表明栈结构不存在。  
+>> 判断栈为空的条件是： S.top == S.base  
+>> 判断栈为满的条件是： S.top == S.base + m0
+
+### 栈的应用
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/tkXlj1cu*8WMXSHPVGmp4xmSO.JP7dxTNwcCcOw3WEU!/b/dEEBAAAAAAAA&bo=YAOAAgAAAAARF8E!&rf=viewer_4)
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/TBJ.sw5oDjTRkePNaB7EbL4HA2DEOhqyjAs3VUmXArE!/b/dEQBAAAAAAAA&bo=jQNrAgAAAAARF8c!&rf=viewer_4)
+
+* 栈与递归的实现   
+**递归**：一个直接调用自己或通过一系列的调用语句间接调用自己的函数，称做递归函数  
 
 
 
+### 队列
+**队列**：线性表  
+>> 限定在表的一端插入（对尾），另一端删除（对头）。  
+>> 先进先出（FIFO结构）。  
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/gT80DWftI4A8cQAJ1DGZHFveCCneNLZD7mo9rBHSrSY!/b/dAgBAAAAAAAA&bo=FwK3AAAAAAARB5I!&rf=viewer_4)
+
+>>当队列中没有元素时，称为**空队列**。
+
+#### 双端队列
+**双端队列**：线性表  
+>> 限定插入和删除在表的两端进行。  
+>> 先进先出（FIFO结构）。  
+> 输出受限的双端队列：一个端点可插入和删除，另一个端点仅可插入。  
+> 输入受限的双端队列：一个端点可插入和删除，另一个端点仅可删除。  
+
+#### 链队列——队列的链式表示和实现
+**链队列**：  
+> 用链表表示的队列。  
+> 限制仅在表头删除和表尾插入的单链表。
+
+**一个链队列由一个头指针和一个尾指针唯一确定**。  
+（因为仅有头指针不便于在表尾做插入操作）。
+
+  为了操作的方便，也给链队列添加一个头结点，因此，**空队列**的判定条件是：**头指针和尾指针都指向头结点**。 
+ 
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/BAdQgZPT4ZCT4b4kjlMG91zdcUPJ*.BvMA9ukhYM9mE!/b/dFYBAAAAAAAA&bo=KQPlAAAAAAARB*8!&rf=viewer_4)
+
+**用C语言定义链队列结构如下**：  
+
+    typedef struct QNode 
+    {  QElemtypedata; 
+    struct QNode  *next; 
+    } Qnode,  *QueuePtr;   // 定义队列的结点 
+    typedef struct 
+    {  QueuePtr   front;// 队头指针 
+       QueuePtr   rear;  // 队尾指针 
+    }LinkQueue; 
+    
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/Z8RBNxU6bz9zTzofHb3p.2dAs*D*oZzrjU0jHqgiRoA!/b/dJEAAAAAAAAA&bo=ZwNwAgAAAAARByY!&rf=viewer_4)
+    
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/dIBr7M6KSb19VGq.Gynge5NbYVvLmoeGVcAa1BolkcE!/b/dGgBAAAAAAAA&bo=RQOAAgAAAAARF.Q!&rf=viewer_4)
 
 
-
-
-
-
-
-
-
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/TnR3nyjAtJiIsRowj9fHfWjCxe3q2YcM6uR7cpvsDd0!/b/dEUBAAAAAAAA&bo=KAOAAgAAAAARF4k!&rf=viewer_4)
 
