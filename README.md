@@ -1026,3 +1026,97 @@ typedef struct DuLNode{
 6. 任一二叉树的叶子结点在先、中和后序遍历序列中的相对次序 (  A )  。 （A）不发生改变
 
 
+### 二叉树的存储结构
+1. 顺序存储结构  
+> 完全二叉树：用一组地址连续的存储单元一次自上而下、自左至右存储结点元素，即将编号为i的结点元素存储在一维数组中下标为i-1的分量中。  
+> 一般二叉树：将其每个结点与完全二叉树上的结点相对照，存储在一维数组的相应分量中。
+
+**此顺序结构仅适用于完全二叉树**  
+
+2. 链式存储结构  
+* 二叉树结点的构成  
+* 存储方式  
+**在n个结点的二叉链表中有n+1个空指针域**。  
+
+C语言的类型描述如下：
+    
+    typedef struct BiTNode { // 结点结构
+       TElemType  data;
+       struct BiTNode  *lchild, *rchild; // 左右孩子指针
+    } BiTNode, *BiTree;
+ 
+### 线索二叉树
+**线索化**:对二叉树按某种次序遍历使其变为线索二叉树的过程。
+
+二叉树线索化的目的：利用线索化后的二叉树中的线索就可以直接找到某些结点在某种遍历序列中的前驱和后继结点。  
+二叉树线索化的实质：在遍历过程中用线索取代空指针。
+
+在线索树（中序）中找结点后继的方法：  
+1. 若右链是线索，则直接指示后继  
+2. 若右链是指针，则“右孩找左”。即：**中序后继右孩找左**。
+
+在线索树（中序）中找结点前驱的方法：  
+1. 若左链是线索，则直接指示前驱  
+2. 若右链是指针，则“右孩找左”。即：**中序前驱左孩找右**。
+
+在线索树上进行遍历的方法：  
+1. 从序列中第一个结点起，依次找后继，直至后继为空。  
+2. 从序列汇总最后一个结点起，依次找前驱，直至前驱为空。  
+
+
+线索二叉树的存储表示：  
+
+    typedef enum PointerTag { Link, Thread }; 
+    // Link == 0：指针，Thread == 1：线索 
+    typedef struct BiThrNode {
+       TElemTypedata;  
+       struct BiThrNode   *lchild,  *rchild; // 左右指针 
+       PointerTagLTag,  RTag; // 左右标志 
+    } BiThrNode,  *BiThrTree; 
+
+
+课堂练习
+选择题 
+1. 在线索化二叉树中，t 所指结点没有左子树的充要条件是: t -> ltag==1且t -> lchild==NULL 
+
+2. 二叉树按某种顺序线索化后，任一结点均有指向其前趋和后继的线索，这种说法 **错误**  
+	> 只有空指针的地方才能加指向前驱或后继的线索，有左／右子女的结点，其左／右指针指向左／右子女。
+
+### 哈夫曼树及其应用
+
+问题：什么是哈弗曼树？  
+>> 判别树：用于描述分类过程的二叉树。  
+
+* 基本概念：  
+* 路径：从树中的一个结点到另一个结点之间的分支构成这两个结点间的路径。  
+* 结点的路径长度：两结点间路径上的分支树。  
+* 树的路径长度：从树根到每个结点的路径长度之和。  
+
+**完全二叉树是路径长度最短的二叉树**
+
+* 权：将树中结点赋给一个有着某种含义的数值，则这个数值称为该结点的权值。  
+* 结点的带权路径长度：从根结点到该节点之间的路径长度与该结点的权的乘积。  
+* 树的带权路径长度：树中所有叶子结点的带权路径长度之和。  
+
+哈夫曼树：最优树（带权路径长度最短的树）  
+
+哈弗曼树：最优二叉树（带权路径长度最短的二叉树）  
+
+* 满二叉树不一定是哈弗曼树。  
+* 哈弗曼树中权越大的叶子离根越近。  
+* 具有相同带权结点的哈夫曼树不唯一。  
+
+* 满二叉树不一定是哈夫曼树。    
+* 哈弗曼树中权越大的叶子离根越近。  
+* 具有相同带权结点的哈弗曼树不唯一。  
+* 包含n个叶子结点的哈弗曼树中共有2n-1个结点。  
+* 哈弗曼树的结点度数为0或2，没有度为1的结点。  
+* 包含n棵树的森林要经过n-1次合并才能形成哈夫曼树，共产生n-1个新结点。
+* 
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/C3xsx1UJbdw1rLj3.I3MweptXyfsf2id4UalxLL4F9o!/b/dEIBAAAAAAAA&bo=1QPcAdUD3AERGS4!&rf=viewer_4)
+
+ ![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/1DXfwTv.Ba6ccb921hjSBdWplvdOtrt*VeSYPbpalTk!/b/dFsBAAAAAAAA&bo=ggKvAQAAAAARBx4!&rf=viewer_4)  
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/qR4tpCDOdEpZ8mOmQZjuJDW8HKuxeGUhWYPSv7.aKXo!/b/dFsBAAAAAAAA&bo=hANtAgAAAAARF8g!&rf=viewer_4)
+
+![](http://m.qpic.cn/psb?/V12SqnDn3ERdXU/T6Ieu0.lY4kz5MlNYwMnyBJkoFI.Vq.veDKQUqBsv24!/b/dEUBAAAAAAAA&bo=lAKVAQAAAAARFyI!&rf=viewer_4)
